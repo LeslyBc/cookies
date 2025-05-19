@@ -6,6 +6,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import services.LoginService;
+import services.LoginServiceImplemet;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -23,14 +26,20 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+
         // Obtener todas las cookies del request, si no hay crear arreglo vacío
-        Cookie[] cookies = req.getCookies() != null ? req.getCookies() : new Cookie[0];
+        /*Cookie[] cookies = req.getCookies() != null ? req.getCookies() : new Cookie[0];
 
         // Buscar la cookie llamada "username" usando Streams de Java
         Optional<String> cookieOptional = Arrays.stream(cookies)
                 .filter(c -> "username".equals(c.getName()))  // Filtrar por nombre de cookie
                 .map(Cookie::getValue)  // Obtener solo el valor de la cookie
-                .findAny();  // Tomar la primera coincidencia
+                .findAny();  // Tomar la primera coincidencia*/
+
+        //Creamos el nuevo objeto de cookie
+        LoginService auth= new LoginServiceImplemet();
+        Optional<String> cookieOptional= auth.getUserName(req);
+
 
         // Si existe la cookie (usuario ya autenticado)
         if (cookieOptional.isPresent()) {
